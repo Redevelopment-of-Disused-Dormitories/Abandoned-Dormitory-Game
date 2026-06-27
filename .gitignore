@@ -1,0 +1,81 @@
+# ===========================
+# Godot Engine .gitignore
+# ===========================
+
+# Godot 4.x 專案暫存
+.godot/
+.godot/
+*.translation
+
+# 匯出暫存
+export.cfg
+export_presets.cfg
+*.tmp
+*.export
+
+# 匯入快取
+*.import
+
+# ===========================
+# IDE / 編輯器
+# ===========================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains (IntelliJ, Rider)
+.idea/
+
+# Visual Studio
+*.suo
+*.user
+*.sln.docstates
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ===========================
+# 作業系統
+# ===========================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ===========================
+# 專案特定
+# ===========================
+
+# Steam 憑證（絕對不能上傳！）
+*.pem
+*.key
+steam_appid.txt
+
+# 暫存音檔/影片
+*.tmp.wav
+*.tmp.ogg
+*.tmp.mp3
+*.tmp.mp4
+*.tmp.webm
+
+# 壓縮檔
+*.7z
+*.rar
+*.zip
+*.tar.gz
+
+# 報告檔案
+*.log
+*.crash
