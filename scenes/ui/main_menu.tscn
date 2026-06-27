@@ -1,0 +1,157 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqm3d2k1r0m4"]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_script"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.08, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "🏚️ 廢棄宿舍"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 48
+
+[node name="Subtitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Abandoned Dormitory Game"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+
+[node name="Spacer" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 50)
+
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="HostButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 50)
+text = "🚪 創立宿舍伺服器"
+theme_override_font_sizes/font_size = 18
+
+[node name="BrowseButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 50)
+text = "🔍 尋找探險隊伍"
+theme_override_font_sizes/font_size = 18
+
+[node name="SettingsButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 50)
+text = "⚙️ 調節配備"
+theme_override_font_sizes/font_size = 18
+
+[node name="QuitButton" type="Button" parent="ButtonContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(300, 50)
+text = "🚪 離開調查"
+theme_override_font_sizes/font_size = 18
+
+[node name="VoiceStatus" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -80.0
+offset_right = 400.0
+offset_bottom = -20.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VoiceStatus"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MicIcon" type="Label" parent="VoiceStatus/HBoxContainer"]
+layout_mode = 2
+text = "🎤"
+theme_override_font_sizes/font_size = 24
+
+[node name="AudioMeter" type="ProgressBar" parent="VoiceStatus/HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 20)
+max_value = 100.0
+value = 0.0
+show_percentage = false
+
+[node name="StatusLabel" type="Label" parent="VoiceStatus"]
+layout_mode = 2
+text = "🔴 錯誤：未偵測到麥克風輸入"
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+
+[node name="HostDialog" type="AcceptDialog" parent="."]
+title = "創立宿舍伺服器"
+size = Vector2i(400, 250)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostDialog"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="RoomNameLabel" type="Label" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+text = "房間名稱："
+
+[node name="RoomNameInput" type="LineEdit" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+text = "宿舍探險隊"
+
+[node name="PasswordLabel" type="Label" parent="HostDialog/VBoxContainer"]
+layout_mode = 2
+text = "密碼（選填）："
+
+[node name="PasswordInput" type="LineEdit" parent="HostDialog/VBoxContainer"]
+layout_mode = 2"
+secret = true
+placeholder_text = "不設定密碼則留空"
+
+[connection signal="pressed" from="ButtonContainer/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="ButtonContainer/BrowseButton" to="." method="_on_browse_pressed"]
+[connection signal="pressed" from="ButtonContainer/SettingsButton" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="ButtonContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="confirmed" from="HostDialog" to="." method="_on_host_confirmed"]
