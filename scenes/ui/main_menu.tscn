@@ -146,7 +146,7 @@ layout_mode = 2
 text = "密碼（選填）："
 
 [node name="PasswordInput" type="LineEdit" parent="HostDialog/VBoxContainer"]
-layout_mode = 2"
+layout_mode = 2
 secret = true
 placeholder_text = "不設定密碼則留空"
 

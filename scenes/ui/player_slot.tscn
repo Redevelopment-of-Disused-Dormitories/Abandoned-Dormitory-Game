@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://q1r2s3t4u5v6"]
+
+[ext_resource type="Script" path="res://scripts/ui/player_slot.gd" id="1_script"]
+
+[node name="PlayerSlot" type="PanelContainer"]
+custom_minimum_size = Vector2(400, 50)
+script = ExtResource("1_script")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="PlayerName" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(150, 0)
+text = "玩家名稱"
+theme_override_font_sizes/font_size = 16
+
+[node name="MicIcon" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+text = "🎤"
+theme_override_font_sizes/font_size = 20
+
+[node name="ReadyStatus" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(80, 0)
+text = "未準備"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)

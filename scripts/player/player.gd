@@ -84,7 +84,7 @@ func _process(delta):
 
 # ========== 手電筒 ==========
 func toggle_flashlight():
-	flashlight_on = not flashilight_on
+	flashlight_on = not flashlight_on
 	flashlight.visible = flashlight_on
 
 # ========== 互動 ==========

@@ -44,7 +44,7 @@ func end_game(victory: bool):
 	game_over.emit(victory)
 
 # ========== 玩家死亡 ==========
-func player_died(player_id: int):
+func on_player_died(player_id: int):
 	if player_id in players_alive:
 		players_alive.erase(player_id)
 		print("[Game] 玩家死亡: ", player_id)
