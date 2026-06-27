@@ -103,7 +103,7 @@ func get_lobby_data(key: String) -> String:
 
 # ========== 搜尋大廳 ==========
 func get_lobby_list() -> void:
-	Steam.addRequestLobbyListDistanceFilter(Steam.LobbyDistanceFilter.LOBBY_DISTANCE_FILTER_COUNTRYWIDE)
+	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
 	Steam.requestLobbyList()
 
 func _on_lobby_match_list(lobbies: Array) -> void:
@@ -117,7 +117,6 @@ func _on_lobby_match_list(lobbies: Array) -> void:
 func send_lobby_chat(message: String) -> void:
 	Steam.sendLobbyChatMsg(current_lobby_id, message)
 
-func _on_lobby_chat_msg(user_id: int, _chat_type: int, message_id: int) -> void:
-	var message = Steam.getLobbyChatEntry(message_id)
+func _on_lobby_message(lobby_id: int, user_id: int, message: String, chat_type: int) -> void:
 	print("[Steam] 聊天: ", user_id, " - ", message)
 	lobby_chat_message.emit(user_id, message)

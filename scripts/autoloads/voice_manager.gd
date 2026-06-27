@@ -6,11 +6,12 @@ signal voice_data_received(sender_id: int, audio_data: PackedByteArray)
 # ========== 變數 ==========
 var is_recording := false
 var voice_sample_rate: int = 24000
-
-@onready var voice_player: AudioStreamPlayer3D = $VoicePlayer
+var voice_player: AudioStreamPlayer
 
 # ========== 初始化 ==========
 func _ready():
+	voice_player = AudioStreamPlayer.new()
+	add_child(voice_player)
 	setup_audio_player()
 
 func setup_audio_player():
