@@ -138,7 +138,7 @@ type:
 
 ## 📄 授權條款
 
-本專案採用 [MIT License](LICENSE) 授權。
+本專案採用 [Apache License 2.0](LICENSE) 授權。
 
 ---
 
