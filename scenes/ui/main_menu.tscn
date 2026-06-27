@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqm3d2k1r0m4"]
+[gd_scene load_steps=3 format=3 uid="uid://cqm3d2k1r0m4"]
 
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/ui/voice_status.gd" id="2_voice_status"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -93,6 +94,7 @@ text = "🚪 離開調查"
 theme_override_font_sizes/font_size = 18
 
 [node name="VoiceStatus" type="PanelContainer" parent="."]
+script = ExtResource("2_voice_status")
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0

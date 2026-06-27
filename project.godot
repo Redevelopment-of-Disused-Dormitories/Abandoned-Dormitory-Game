@@ -23,9 +23,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SteamManager="*res://scripts/autoloads/steam_manager.gd"
-VoiceManager="*res://scripts/autoloads/voice_manager.gd"
-GameManager="*res://scripts/autoloads/game_manager.gd"
+steam_manager="*res://scripts/autoloads/steam_manager.gd"
+voice_manager="*res://scripts/autoloads/voice_manager.gd"
+game_manager="*res://scripts/autoloads/game_manager.gd"
 
 [display]
 
