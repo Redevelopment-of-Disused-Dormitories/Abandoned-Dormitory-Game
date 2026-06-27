@@ -89,11 +89,15 @@ func process_received_voice(audio_data: PackedByteArray):
 
 # ========== 音量偵測 ==========
 func get_mic_level() -> float:
+	if not steam_manager or steam_manager.steam_id == 0:
+		return 0.0
 	var available = Steam.getAvailableVoice()
 	if available.result == Steam.VoiceResult.VOICE_RESULT_OK:
 		return clamp(float(available.size) / 2048.0, 0.0, 1.0)
 	return 0.0
 
 func has_microphone() -> bool:
+	if not steam_manager or steam_manager.steam_id == 0:
+		return false
 	var available = Steam.getAvailableVoice()
 	return available.result == Steam.VoiceResult.VOICE_RESULT_OK
