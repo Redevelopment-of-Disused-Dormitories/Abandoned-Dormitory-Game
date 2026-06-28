@@ -101,13 +101,7 @@ func process_received_voice(audio_data: PackedByteArray):
 
 # ========== 音量偵測 ==========
 func get_mic_level() -> float:
-	var bus_idx = AudioServer.get_bus_index("Record")
-	if bus_idx >= 0:
-		var level = AudioServer.get_bus_peak_volume_db(bus_idx, 0)
-		level = db_to_linear(level) * 100.0
-		return clamp(level, 0.0, 1.0)
 	return 0.0
 
 func has_microphone() -> bool:
-	var devices = AudioServer.get_input_device_list()
-	return devices.size() > 0
+	return true
