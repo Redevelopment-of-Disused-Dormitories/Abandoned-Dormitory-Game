@@ -26,6 +26,8 @@ config/icon="res://icon.svg"
 steam_manager="*res://scripts/autoloads/steam_manager.gd"
 voice_manager="*res://scripts/autoloads/voice_manager.gd"
 game_manager="*res://scripts/autoloads/game_manager.gd"
+audio_manager="*res://scripts/autoloads/audio_manager.gd"
+event_bus="*res://scripts/autoloads/event_bus.gd"
 
 [display]
 
