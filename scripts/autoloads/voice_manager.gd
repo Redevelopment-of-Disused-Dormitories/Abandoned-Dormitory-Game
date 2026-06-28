@@ -8,6 +8,7 @@ var is_recording := false
 var voice_sample_rate: int = 24000
 var voice_player: AudioStreamPlayer
 var steam_available: bool = false
+var steam_singleton = null
 
 # ========== 初始化 ==========
 func _ready():
@@ -17,10 +18,12 @@ func _ready():
 	check_steam()
 
 func check_steam():
-	steam_available = Engine.has_singleton("Steam")
-	if steam_available:
+	if Engine.has_singleton("Steam"):
+		steam_singleton = Engine.get_singleton("Steam")
+		steam_available = true
 		print("[Voice] Steam 語音可用")
 	else:
+		steam_available = false
 		print("[Voice] Steam 不可用，使用離線模式")
 
 func setup_audio_player():
@@ -32,16 +35,16 @@ func setup_audio_player():
 # ========== 錄音控制 ==========
 func start_recording():
 	is_recording = true
-	if steam_available and steam_manager.is_steam_available:
-		Steam.startVoiceRecording()
-		Steam.setInGameVoiceSpeaking(steam_manager.steam_id, true)
+	if steam_available and steam_singleton and steam_manager.is_steam_available:
+		steam_singleton.startVoiceRecording()
+		steam_singleton.setInGameVoiceSpeaking(steam_manager.steam_id, true)
 	print("[Voice] 開始錄音")
 
 func stop_recording():
 	is_recording = false
-	if steam_available and steam_manager.is_steam_available:
-		Steam.stopVoiceRecording()
-		Steam.setInGameVoiceSpeaking(steam_manager.steam_id, false)
+	if steam_available and steam_singleton and steam_manager.is_steam_available:
+		steam_singleton.stopVoiceRecording()
+		steam_singleton.setInGameVoiceSpeaking(steam_manager.steam_id, false)
 	print("[Voice] 停止錄音")
 
 func toggle_recording():
@@ -52,13 +55,13 @@ func toggle_recording():
 
 # ========== 語音處理 ==========
 func _process(delta):
-	if is_recording and steam_available and steam_manager.is_steam_available:
+	if is_recording and steam_available and steam_singleton and steam_manager.is_steam_available:
 		check_and_send_voice()
 
 func check_and_send_voice():
-	var available = Steam.getAvailableVoice()
+	var available = steam_singleton.getAvailableVoice()
 	if available.result == 0 and available.size > 0:
-		var voice_data = Steam.getVoice()
+		var voice_data = steam_singleton.getVoice()
 		if voice_data.result == 0 and voice_data.size > 0:
 			send_voice_to_others(voice_data.buffer)
 
@@ -73,10 +76,10 @@ func _rpc_send_voice(audio_data: PackedByteArray):
 	process_received_voice(audio_data)
 
 func process_received_voice(audio_data: PackedByteArray):
-	if not steam_available:
+	if not steam_available or not steam_singleton:
 		return
 	
-	var decompressed = Steam.decompressVoice(audio_data, voice_sample_rate)
+	var decompressed = steam_singleton.decompressVoice(audio_data, voice_sample_rate)
 	if decompressed.result == 0 and decompressed.size > 0:
 		var playback = voice_player.get_stream_playback()
 		if playback == null:
