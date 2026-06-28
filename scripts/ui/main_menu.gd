@@ -37,15 +37,14 @@ func update_voice_status():
 
 # ========== 按鈕功能 ==========
 func _on_host_pressed():
-	# 檢查麥克風
-	if not voice_manager.has_microphone():
-		show_message("⚠️ 錯誤：未偵測到麥克風輸入。請至「調節配備」設定")
-		return
-	
-	# 顯示創建房間對話框
+	# 顯示創建房間對話框（不阻擋）
 	host_dialog.popup_centered()
 	room_name_input.text = steam_manager.steam_name + " 的宿舍"
 	password_input.text = ""
+	
+	# 如果沒有麥克風，顯示警告
+	if not voice_manager.has_microphone():
+		show_message("⚠️ 警告：未偵測到麥克風。遊戲需要麥克風才能開始。")
 
 func _on_host_confirmed():
 	var room_name = room_name_input.text
@@ -64,13 +63,12 @@ func _on_lobby_created(lobby_id: int):
 	get_tree().change_scene_to_file("res://scenes/ui/lobby.tscn")
 
 func _on_browse_pressed():
-	# 檢查麥克風
-	if not voice_manager.has_microphone():
-		show_message("⚠️ 錯誤：未偵測到麥克風輸入。請至「調節配備」設定")
-		return
-	
-	# 顯示伺服器列表
+	# 顯示伺服器列表（不阻擋）
 	get_tree().change_scene_to_file("res://scenes/ui/server_browser.tscn")
+	
+	# 如果沒有麥克風，顯示警告
+	if not voice_manager.has_microphone():
+		show_message("⚠️ 警告：未偵測到麥克風。遊戲需要麥克風才能開始。")
 
 func _on_settings_pressed():
 	# 顯示設定選單

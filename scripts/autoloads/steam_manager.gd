@@ -13,28 +13,46 @@ var steam_id: int = 0
 var steam_name: String = ""
 var current_lobby_id: int = 0
 var lobby_members: Array = []
+var is_steam_available: bool = false
 
 # ========== 初始化 ==========
 func _ready():
 	init_steam()
 
 func init_steam():
+	# 檢查 Steam API 是否可用
+	if not Engine.has_singleton("Steam"):
+		print("[Steam] Steam API 不可用，使用離線模式")
+		steam_name = "離線玩家"
+		steam_initialized.emit()
+		return
+	
 	var result: Dictionary = Steam.steamInitEx(false)
 	print("[Steam] Init Result: ", result)
 	
 	if result.status == 0:
 		steam_id = Steam.getSteamID()
 		steam_name = Steam.getPersonaName()
+		is_steam_available = true
 		print("[Steam] 成功: ", steam_name, " (", steam_id, ")")
 		steam_initialized.emit()
 	else:
-		push_error("[Steam] 初始化失敗: " + str(result.verbal))
+		print("[Steam] 初始化失敗，使用離線模式")
+		steam_name = "離線玩家"
+		steam_initialized.emit()
 
 func _process(delta):
-	Steam.run_callbacks()
+	if is_steam_available:
+		Steam.run_callbacks()
 
 # ========== 大廳功能 ==========
 func create_lobby(lobby_type: int, max_members: int) -> void:
+	if not is_steam_available:
+		print("[Steam] 離線模式：無法建立大廳")
+		# 離線模式：直接跳轉到大廳
+		lobby_created.emit(0)
+		return
+	
 	print("[Steam] 建立大廳...")
 	Steam.createLobby(lobby_type, max_members)
 

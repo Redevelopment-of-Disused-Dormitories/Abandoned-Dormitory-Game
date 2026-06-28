@@ -23,14 +23,18 @@ func setup_audio_player():
 # ========== 錄音控制 ==========
 func start_recording():
 	is_recording = true
-	Steam.startVoiceRecording()
-	Steam.setInGameVoiceSpeaking(steam_manager.steam_id, true)
+	# 嘗試啟動 Steam 錄音（如果可用）
+	if Engine.has_singleton("Steam") and steam_manager.is_steam_available:
+		Steam.startVoiceRecording()
+		Steam.setInGameVoiceSpeaking(steam_manager.steam_id, true)
 	print("[Voice] 開始錄音")
 
 func stop_recording():
 	is_recording = false
-	Steam.stopVoiceRecording()
-	Steam.setInGameVoiceSpeaking(steam_manager.steam_id, false)
+	# 嘗試停止 Steam 錄音（如果可用）
+	if Engine.has_singleton("Steam") and steam_manager.is_steam_available:
+		Steam.stopVoiceRecording()
+		Steam.setInGameVoiceSpeaking(steam_manager.steam_id, false)
 	print("[Voice] 停止錄音")
 
 func toggle_recording():
@@ -89,15 +93,15 @@ func process_received_voice(audio_data: PackedByteArray):
 
 # ========== 音量偵測 ==========
 func get_mic_level() -> float:
-	if not steam_manager or steam_manager.steam_id == 0:
-		return 0.0
-	var available = Steam.getAvailableVoice()
-	if available.result == Steam.VoiceResult.VOICE_RESULT_OK:
-		return clamp(float(available.size) / 2048.0, 0.0, 1.0)
+	# 使用 Godot 內建音訊偵測
+	var bus_idx = AudioServer.get_bus_index("Record")
+	if bus_idx >= 0:
+		var level = AudioServer.get_bus_peak_volume_db(bus_idx, 0)
+		level = db_to_linear(level) * 100.0
+		return clamp(level, 0.0, 1.0)
 	return 0.0
 
 func has_microphone() -> bool:
-	if not steam_manager or steam_manager.steam_id == 0:
-		return false
-	var available = Steam.getAvailableVoice()
-	return available.result == Steam.VoiceResult.VOICE_RESULT_OK
+	# 檢查是否有可用的麥克風裝置
+	var devices = AudioServer.get_input_device_list()
+	return devices.size() > 0
