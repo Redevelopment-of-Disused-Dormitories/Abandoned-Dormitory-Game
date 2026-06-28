@@ -100,7 +100,9 @@ func _on_start_pressed():
 
 # ========== 聊天功能 ==========
 func _on_chat_message(sender_id: int, message: String):
-	var sender_name = Steam.getFriendPersonaName(sender_id)
+	var sender_name = "玩家"
+	if steam_manager.steam_singleton:
+		sender_name = steam_manager.steam_singleton.getFriendPersonaName(sender_id)
 	add_chat_message(sender_name + ": " + message)
 	
 	# 處理準備狀態

@@ -22,8 +22,11 @@ func refresh_server_list():
 
 func _on_lobby_match_list(lobbies: Array):
 	for lobby_id in lobbies:
-		var lobby_name = Steam.getLobbyData(lobby_id, "name")
-		var member_count = Steam.getNumLobbyMembers(lobby_id)
+		var lobby_name = "未知房間"
+		var member_count = 0
+		if steam_manager.steam_singleton:
+			lobby_name = steam_manager.steam_singleton.getLobbyData(lobby_id, "name")
+			member_count = steam_manager.steam_singleton.getNumLobbyMembers(lobby_id)
 		add_server_entry(lobby_id, lobby_name, member_count)
 
 func add_server_entry(lobby_id: int, name: String, players: int):
