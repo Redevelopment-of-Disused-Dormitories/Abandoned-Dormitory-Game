@@ -55,8 +55,8 @@ func _on_host_confirmed():
 	if password != "":
 		steam_manager.set_lobby_data("password", password)
 	
-	# 建立大廳
-	steam_manager.create_lobby(Steam.LobbyType.LOBBY_TYPE_PUBLIC, 7)
+	# 建立大廳（使用數值 2 = LOBBY_TYPE_PUBLIC）
+	steam_manager.create_lobby(2, 7)
 
 func _on_lobby_created(lobby_id: int):
 	# 跳轉到大廳等待畫面
