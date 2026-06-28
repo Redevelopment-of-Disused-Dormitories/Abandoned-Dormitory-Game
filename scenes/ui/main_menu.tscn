@@ -21,77 +21,80 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.05, 0.05, 0.08, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MainVBox" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -250.0
-offset_right = 200.0
-offset_bottom = 250.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = 100.0
+offset_right = -200.0
+offset_bottom = -100.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 30
 alignment = 1
 
-[node name="Title" type="Label" parent="VBoxContainer"]
+[node name="Spacer1" type="Control" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="MainVBox"]
 layout_mode = 2
 text = "🏚️ 廢棄宿舍"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 56
 
-[node name="Subtitle" type="Label" parent="VBoxContainer"]
+[node name="Subtitle" type="Label" parent="MainVBox"]
 layout_mode = 2
 text = "Abandoned Dormitory Game"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 20
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 
-[node name="Spacer" type="Control" parent="VBoxContainer"]
+[node name="Spacer2" type="Control" parent="MainVBox"]
 layout_mode = 2
 custom_minimum_size = Vector2(0, 50)
+size_flags_vertical = 3
 
-[node name="ButtonContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -100.0
-offset_right = 150.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="ButtonContainer" type="VBoxContainer" parent="MainVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
 theme_override_constants/separation = 15
+alignment = 1
 
-[node name="HostButton" type="Button" parent="ButtonContainer"]
+[node name="HostButton" type="Button" parent="MainVBox/ButtonContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(300, 50)
+custom_minimum_size = Vector2(350, 60)
+size_flags_horizontal = 4
 text = "🚪 創立宿舍伺服器"
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
 
-[node name="BrowseButton" type="Button" parent="ButtonContainer"]
+[node name="BrowseButton" type="Button" parent="MainVBox/ButtonContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(300, 50)
+custom_minimum_size = Vector2(350, 60)
+size_flags_horizontal = 4
 text = "🔍 尋找探險隊伍"
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
 
-[node name="SettingsButton" type="Button" parent="ButtonContainer"]
+[node name="SettingsButton" type="Button" parent="MainVBox/ButtonContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(300, 50)
+custom_minimum_size = Vector2(350, 60)
+size_flags_horizontal = 4
 text = "⚙️ 調節配備"
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
 
-[node name="QuitButton" type="Button" parent="ButtonContainer"]
+[node name="QuitButton" type="Button" parent="MainVBox/ButtonContainer"]
 layout_mode = 2
-custom_minimum_size = Vector2(300, 50)
+custom_minimum_size = Vector2(350, 60)
+size_flags_horizontal = 4
 text = "🚪 離開調查"
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 20
+
+[node name="Spacer3" type="Control" parent="MainVBox"]
+layout_mode = 2
+size_flags_vertical = 3
 
 [node name="VoiceStatus" type="PanelContainer" parent="."]
 script = ExtResource("2_voice_status")
@@ -101,7 +104,7 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
 offset_top = -80.0
-offset_right = 400.0
+offset_right = 450.0
 offset_bottom = -20.0
 grow_vertical = 0
 
@@ -123,9 +126,9 @@ show_percentage = false
 
 [node name="StatusLabel" type="Label" parent="VoiceStatus"]
 layout_mode = 2
-text = "🔴 錯誤：未偵測到麥克風輸入"
+text = "🟢 通訊已連線"
 theme_override_font_sizes/font_size = 14
-theme_override_colors/font_color = Color(1, 0.3, 0.3, 1)
+theme_override_colors/font_color = Color(0.3, 1, 0.3, 1)
 
 [node name="HostDialog" type="AcceptDialog" parent="."]
 title = "創立宿舍伺服器"
@@ -152,8 +155,8 @@ layout_mode = 2
 secret = true
 placeholder_text = "不設定密碼則留空"
 
-[connection signal="pressed" from="ButtonContainer/HostButton" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="ButtonContainer/BrowseButton" to="." method="_on_browse_pressed"]
-[connection signal="pressed" from="ButtonContainer/SettingsButton" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="ButtonContainer/QuitButton" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="MainVBox/ButtonContainer/HostButton" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="MainVBox/ButtonContainer/BrowseButton" to="." method="_on_browse_pressed"]
+[connection signal="pressed" from="MainVBox/ButtonContainer/SettingsButton" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="MainVBox/ButtonContainer/QuitButton" to="." method="_on_quit_pressed"]
 [connection signal="confirmed" from="HostDialog" to="." method="_on_host_confirmed"]

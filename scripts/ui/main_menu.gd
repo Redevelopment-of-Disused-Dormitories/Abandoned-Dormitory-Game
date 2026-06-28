@@ -5,10 +5,10 @@ extends Control
 @onready var room_name_input = $HostDialog/VBoxContainer/RoomNameInput
 @onready var password_input = $HostDialog/VBoxContainer/PasswordInput
 @onready var voice_status = $VoiceStatus
-@onready var host_button = $ButtonContainer/HostButton
-@onready var browse_button = $ButtonContainer/BrowseButton
-@onready var settings_button = $ButtonContainer/SettingsButton
-@onready var quit_button = $ButtonContainer/QuitButton
+@onready var host_button = $MainVBox/ButtonContainer/HostButton
+@onready var browse_button = $MainVBox/ButtonContainer/BrowseButton
+@onready var settings_button = $MainVBox/ButtonContainer/SettingsButton
+@onready var quit_button = $MainVBox/ButtonContainer/QuitButton
 
 # ========== 初始化 ==========
 func _ready():
