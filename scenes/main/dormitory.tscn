@@ -1,34 +1,57 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1e2f3g4h5i6"]
+[gd_scene load_steps=10 format=3 uid="uid://d1e2f3g4h5i6"]
 
 [ext_resource type="PackedScene" uid="uid://p3q4r5s6t7u8" path="res://scenes/player/player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://scripts/interaction/door.gd" id="2_door"]
+[ext_resource type="Script" path="res://scripts/interaction/relic.gd" id="3_relic"]
+[ext_resource type="Script" path="res://scripts/interaction/power_box.gd" id="4_powerbox"]
+[ext_resource type="Script" path="res://scripts/interaction/main_gate.gd" id="5_gate"]
+[ext_resource type="Script" path="res://scripts/ai/fog_ai.gd" id="6_fog"]
+[ext_resource type="Script" path="res://scripts/ui/cctv_system.gd" id="7_cctv"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_concrete"]
+[sub_resource type="StandardMaterial3D" id="mat_concrete"]
 albedo_color = Color(0.4, 0.4, 0.4, 1)
 roughness = 0.9
-metallic = 0.1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
 albedo_color = Color(0.3, 0.3, 0.3, 1)
 roughness = 0.8
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
 albedo_color = Color(0.6, 0.55, 0.5, 1)
 roughness = 0.85
 
-[sub_resource type="BoxMesh" id="BoxMesh_floor"]
-size = Vector3(40, 0.2, 40)
+[sub_resource type="BoxMesh" id="mesh_floor"]
+size = Vector3(30, 0.2, 30)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
-size = Vector3(40, 0.2, 40)
+[sub_resource type="BoxShape3D" id="shape_floor"]
+size = Vector3(30, 0.2, 30)
 
-[sub_resource type="BoxMesh" id="BoxMesh_wall"]
-size = Vector3(0.3, 3, 6)
+[sub_resource type="BoxMesh" id="mesh_wall_x"]
+size = Vector3(0.3, 3, 8)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wall"]
-size = Vector3(0.3, 3, 6)
+[sub_resource type="BoxShape3D" id="shape_wall_x"]
+size = Vector3(0.3, 3, 8)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ceiling"]
-size = Vector3(40, 0.1, 40)
+[sub_resource type="BoxMesh" id="mesh_wall_z"]
+size = Vector3(8, 3, 0.3)
+
+[sub_resource type="BoxShape3D" id="shape_wall_z"]
+size = Vector3(8, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="mesh_door"]
+size = Vector3(1.5, 2.5, 0.15)
+
+[sub_resource type="BoxMesh" id="mesh_relic"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="SphereShape3D" id="shape_sphere"]
+radius = 2.0
+
+[sub_resource type="BoxMesh" id="mesh_powerbox"]
+size = Vector3(0.8, 1.0, 0.2)
+
+[sub_resource type="BoxMesh" id="mesh_gate"]
+size = Vector3(4, 3, 0.3)
 
 [node name="DormitoryMap" type="Node3D"]
 
@@ -39,169 +62,182 @@ size = Vector3(40, 0.1, 40)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 light_enabled = false
 
-[node name="OmniLight3D_1" type="OmniLight3D" parent="Environment"]
+[node name="OmniLight1" type="OmniLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 0)
 light_color = Color(1, 0.85, 0.6, 1)
 light_energy = 0.6
 omni_range = 8.0
 omni_attenuation = 1.5
 
-[node name="OmniLight3D_2" type="OmniLight3D" parent="Environment"]
+[node name="OmniLight2" type="OmniLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 2.8, 0)
 light_color = Color(1, 0.85, 0.6, 1)
 light_energy = 0.6
 omni_range = 8.0
 omni_attenuation = 1.5
 
-[node name="OmniLight3D_3" type="OmniLight3D" parent="Environment"]
+[node name="OmniLight3" type="OmniLight3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2.8, 0)
 light_color = Color(1, 0.85, 0.6, 1)
 light_energy = 0.6
 omni_range = 8.0
 omni_attenuation = 1.5
 
-[node name="OmniLight3D_4" type="OmniLight3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 10)
-light_color = Color(1, 0.85, 0.6, 1)
-light_energy = 0.6
-omni_range = 8.0
-omni_attenuation = 1.5
+[node name="Floor" type="StaticBody3D" parent="."]
+mesh = SubResource("mesh_floor")
+material_override = SubResource("mat_floor")
 
-[node name="OmniLight3D_5" type="OmniLight3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, -10)
-light_color = Color(1, 0.85, 0.6, 1)
-light_energy = 0.6
-omni_range = 8.0
-omni_attenuation = 1.5
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("shape_floor")
 
-[node name="VolumetricFog" type="VolumetricFogProcess" parent="Environment"]
-enabled = true
+[node name="CorridorWalls" type="Node3D" parent="."]
 
-[node name="Corridor" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="WallLeft1" type="StaticBody3D" parent="CorridorWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.5, 0)
 
-[node name="Floor" type="MeshInstance3D" parent="Corridor"]
-mesh = SubResource("BoxMesh_floor")
-material_override = SubResource("StandardMaterial3D_floor")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CorridorWalls/WallLeft1"]
+mesh = SubResource("mesh_wall_z")
+material_override = SubResource("mat_wall")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Corridor/Floor"]
-shape = SubResource("BoxShape3D_floor")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CorridorWalls/WallLeft1"]
+shape = SubResource("shape_wall_z")
 
-[node name="Wall_Left" type="StaticBody3D" parent="Corridor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.5, 0)
+[node name="WallRight1" type="StaticBody3D" parent="CorridorWalls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1.5, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Corridor/Wall_Left"]
-mesh = SubResource("BoxMesh_wall")
-material_override = SubResource("StandardMaterial3D_wall")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CorridorWalls/WallRight1"]
+mesh = SubResource("mesh_wall_z")
+material_override = SubResource("mat_wall")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Corridor/Wall_Left"]
-shape = SubResource("BoxShape3D_wall")
-
-[node name="Wall_Right" type="StaticBody3D" parent="Corridor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.5, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Corridor/Wall_Right"]
-mesh = SubResource("BoxMesh_wall")
-material_override = SubResource("StandardMaterial3D_wall")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Corridor/Wall_Right"]
-shape = SubResource("BoxShape3D_wall")
-
-[node name="Ceiling" type="MeshInstance3D" parent="Corridor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-mesh = SubResource("BoxMesh_ceiling")
-material_override = SubResource("StandardMaterial3D_concrete")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CorridorWalls/WallRight1"]
+shape = SubResource("shape_wall_z")
 
 [node name="Rooms" type="Node3D" parent="."]
 
 [node name="Room101" type="Node3D" parent="Rooms"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -3)
 
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/Room101"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+[node name="Door" type="StaticBody3D" parent="Rooms/Room101"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.25, 0)
+script = ExtResource("2_door")
 
-[node name="Door" type="Marker3D" parent="Rooms/Room101"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room101/Door"]
+mesh = SubResource("mesh_door")
+
+[node name="Relic" type="Node3D" parent="Rooms/Room101"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("3_relic")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room101/Relic"]
+mesh = SubResource("mesh_relic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rooms/Room101/Relic"]
 
 [node name="Room102" type="Node3D" parent="Rooms"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 5)
 
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/Room102"]
+[node name="Door" type="StaticBody3D" parent="Rooms/Room102"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.25, 0)
+script = ExtResource("2_door")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room102/Door"]
+mesh = SubResource("mesh_door")
+
+[node name="Relic" type="Node3D" parent="Rooms/Room102"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("3_relic")
 
-[node name="Door" type="Marker3D" parent="Rooms/Room102"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room102/Relic"]
+mesh = SubResource("mesh_relic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rooms/Room102/Relic"]
 
 [node name="Room103" type="Node3D" parent="Rooms"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 13)
 
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/Room103"]
+[node name="Door" type="StaticBody3D" parent="Rooms/Room103"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.25, 0)
+script = ExtResource("2_door")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room103/Door"]
+mesh = SubResource("mesh_door")
+
+[node name="Relic" type="Node3D" parent="Rooms/Room103"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("3_relic")
 
-[node name="Door" type="Marker3D" parent="Rooms/Room103"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room103/Relic"]
+mesh = SubResource("mesh_relic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rooms/Room103/Relic"]
 
 [node name="Room204" type="Node3D" parent="Rooms"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -3)
 
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/Room204"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+[node name="Door" type="StaticBody3D" parent="Rooms/Room204"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.25, 0)
+script = ExtResource("2_door")
 
-[node name="Door" type="Marker3D" parent="Rooms/Room204"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room204/Door"]
+mesh = SubResource("mesh_door")
+
+[node name="Relic" type="Node3D" parent="Rooms/Room204"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("3_relic")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room204/Relic"]
+mesh = SubResource("mesh_relic")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rooms/Room204/Relic"]
 
 [node name="Room205" type="Node3D" parent="Rooms"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 5)
 
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/Room205"]
+[node name="Door" type="StaticBody3D" parent="Rooms/Room205"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1.25, 0)
+script = ExtResource("2_door")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room205/Door"]
+mesh = SubResource("mesh_door")
+
+[node name="Relic" type="Node3D" parent="Rooms/Room205"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+script = ExtResource("3_relic")
 
-[node name="Door" type="Marker3D" parent="Rooms/Room205"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/Room205/Relic"]
+mesh = SubResource("mesh_relic")
 
-[node name="ManagementRoom" type="Node3D" parent="Rooms"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
-
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/ManagementRoom"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-
-[node name="Door" type="Marker3D" parent="Rooms/ManagementRoom"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rooms/Room205/Relic"]
 
 [node name="PowerRoom" type="Node3D" parent="Rooms"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15)
 
-[node name="PowerBox" type="Marker3D" parent="Rooms/PowerRoom"]
+[node name="PowerBox" type="Node3D" parent="Rooms/PowerRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
+script = ExtResource("4_powerbox")
 
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/PowerRoom"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/PowerRoom/PowerBox"]
+mesh = SubResource("mesh_powerbox")
+
+[node name="Relic" type="Node3D" parent="Rooms/PowerRoom"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.8, 0)
+script = ExtResource("3_relic")
 
-[node name="Door" type="Marker3D" parent="Rooms/PowerRoom"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Rooms/PowerRoom/Relic"]
+mesh = SubResource("mesh_relic")
 
-[node name="Bathroom" type="Node3D" parent="Rooms"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
-
-[node name="Relic_SpawnPoint" type="Marker3D" parent="Rooms/Bathroom"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-
-[node name="Door" type="Marker3D" parent="Rooms/Bathroom"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
-
-[node name="Props" type="Node3D" parent="."]
-
-[node name="RadioSpawn" type="Marker3D" parent="Props"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Rooms/PowerRoom/Relic"]
 
 [node name="MainGate" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -14)
+script = ExtResource("5_gate")
 
-[node name="PlayerSpawn" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MainGate"]
+mesh = SubResource("mesh_gate")
 
 [node name="FogAI" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 15)
+script = ExtResource("6_fog")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="FogAI"]
 
@@ -212,7 +248,13 @@ lifetime = 3.0
 [node name="DetectionArea" type="Area3D" parent="FogAI"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="FogAI/DetectionArea"]
-shape = SubResource("SphereShape3D_1")
+shape = SubResource("shape_sphere")
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_1"]
-radius = 2.0
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="RadioSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="CCTVSystem" type="Control" parent="."]
+script = ExtResource("7_cctv")
