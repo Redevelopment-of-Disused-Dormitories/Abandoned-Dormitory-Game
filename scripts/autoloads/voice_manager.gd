@@ -7,12 +7,21 @@ signal voice_data_received(sender_id: int, audio_data: PackedByteArray)
 var is_recording := false
 var voice_sample_rate: int = 24000
 var voice_player: AudioStreamPlayer
+var steam_available: bool = false
 
 # ========== 初始化 ==========
 func _ready():
 	voice_player = AudioStreamPlayer.new()
 	add_child(voice_player)
 	setup_audio_player()
+	check_steam()
+
+func check_steam():
+	steam_available = Engine.has_singleton("Steam")
+	if steam_available:
+		print("[Voice] Steam 語音可用")
+	else:
+		print("[Voice] Steam 不可用，使用離線模式")
 
 func setup_audio_player():
 	var stream = AudioStreamGenerator.new()
@@ -23,16 +32,14 @@ func setup_audio_player():
 # ========== 錄音控制 ==========
 func start_recording():
 	is_recording = true
-	# 嘗試啟動 Steam 錄音（如果可用）
-	if Engine.has_singleton("Steam") and steam_manager.is_steam_available:
+	if steam_available and steam_manager.is_steam_available:
 		Steam.startVoiceRecording()
 		Steam.setInGameVoiceSpeaking(steam_manager.steam_id, true)
 	print("[Voice] 開始錄音")
 
 func stop_recording():
 	is_recording = false
-	# 嘗試停止 Steam 錄音（如果可用）
-	if Engine.has_singleton("Steam") and steam_manager.is_steam_available:
+	if steam_available and steam_manager.is_steam_available:
 		Steam.stopVoiceRecording()
 		Steam.setInGameVoiceSpeaking(steam_manager.steam_id, false)
 	print("[Voice] 停止錄音")
@@ -45,19 +52,15 @@ func toggle_recording():
 
 # ========== 語音處理 ==========
 func _process(delta):
-	if is_recording:
+	if is_recording and steam_available and steam_manager.is_steam_available:
 		check_and_send_voice()
 
 func check_and_send_voice():
 	var available = Steam.getAvailableVoice()
-	
-	if available.result == Steam.VoiceResult.VOICE_RESULT_OK:
-		if available.size > 0:
-			var voice_data = Steam.getVoice()
-			
-			if voice_data.result == Steam.VoiceResult.VOICE_RESULT_OK:
-				if voice_data.size > 0:
-					send_voice_to_others(voice_data.buffer)
+	if available.result == 0 and available.size > 0:
+		var voice_data = Steam.getVoice()
+		if voice_data.result == 0 and voice_data.size > 0:
+			send_voice_to_others(voice_data.buffer)
 
 func send_voice_to_others(audio_data: PackedByteArray):
 	if multiplayer.has_multiplayer_peer():
@@ -70,9 +73,11 @@ func _rpc_send_voice(audio_data: PackedByteArray):
 	process_received_voice(audio_data)
 
 func process_received_voice(audio_data: PackedByteArray):
-	var decompressed = Steam.decompressVoice(audio_data, voice_sample_rate)
+	if not steam_available:
+		return
 	
-	if decompressed.result == Steam.VoiceResult.VOICE_RESULT_OK:
+	var decompressed = Steam.decompressVoice(audio_data, voice_sample_rate)
+	if decompressed.result == 0 and decompressed.size > 0:
 		var playback = voice_player.get_stream_playback()
 		if playback == null:
 			return
@@ -93,7 +98,6 @@ func process_received_voice(audio_data: PackedByteArray):
 
 # ========== 音量偵測 ==========
 func get_mic_level() -> float:
-	# 使用 Godot 內建音訊偵測
 	var bus_idx = AudioServer.get_bus_index("Record")
 	if bus_idx >= 0:
 		var level = AudioServer.get_bus_peak_volume_db(bus_idx, 0)
@@ -102,6 +106,5 @@ func get_mic_level() -> float:
 	return 0.0
 
 func has_microphone() -> bool:
-	# 檢查是否有可用的麥克風裝置
 	var devices = AudioServer.get_input_device_list()
 	return devices.size() > 0
