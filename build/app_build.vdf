@@ -1,0 +1,19 @@
+"app_build"
+{
+    "AppID" "你的App_ID"
+    "Desc" "v1.0 - 初版發布"
+    "BuildOutput" "build\"
+    "ContentRoot" "build\"
+    "Depots"
+    {
+        "你的Depot_ID"
+        {
+            "FileMapping"
+            {
+                "LocalPath" "*"
+                "DepotPath" "."
+                "Recursive" "1"
+            }
+        }
+    }
+}
