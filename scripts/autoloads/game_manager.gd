@@ -70,8 +70,8 @@ func complete_exorcism():
 	end_game(true)
 
 # ========== 準備系統 ==========
-func set_player_ready(player_id: int, ready: bool):
-	players_ready[player_id] = ready
+func set_player_ready(player_id: int, is_ready: bool):
+	players_ready[player_id] = is_ready
 	
 	# 檢查是否所有人都準備好了
 	var all_ready = true

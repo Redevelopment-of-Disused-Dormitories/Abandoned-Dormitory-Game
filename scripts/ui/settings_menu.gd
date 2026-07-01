@@ -52,7 +52,7 @@ func connect_signals():
 	mic_volume_slider.value_changed.connect(_on_mic_volume_changed)
 
 # ========== 設定處理 ==========
-func _process(delta):
+func _process(_delta):
 	update_audio_test()
 
 func update_audio_test():

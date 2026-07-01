@@ -70,7 +70,7 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
-func _process(delta):
+func _process(_delta):
 	if not is_multiplayer_authority():
 		return
 	
@@ -103,7 +103,7 @@ func die():
 	visible = false
 	
 	# 通知遊戲管理器
-	game_manager.player_died(steam_manager.steam_id)
+	game_manager.on_player_died(steam_manager.steam_id)
 	
 	# 切換到觀戰模式
 	# TODO: 實作 CCTV 觀戰

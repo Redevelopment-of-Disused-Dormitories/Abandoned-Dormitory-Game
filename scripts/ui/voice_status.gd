@@ -4,7 +4,7 @@ extends PanelContainer
 @onready var audio_meter = $HBoxContainer/AudioMeter
 @onready var status_label = $StatusLabel
 
-func _process(delta):
+func _process(_delta):
 	update_display()
 
 func update_display():

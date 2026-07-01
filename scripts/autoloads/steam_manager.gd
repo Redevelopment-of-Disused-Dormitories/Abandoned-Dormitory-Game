@@ -40,7 +40,7 @@ func init_steam():
 	
 	steam_initialized.emit()
 
-func _process(delta):
+func _process(_delta):
 	if is_steam_available and steam_singleton:
 		steam_singleton.run_callbacks()
 
@@ -131,7 +131,7 @@ func get_lobby_data(key: String) -> String:
 
 # ========== 搜尋大廳 ==========
 func get_lobby_list() -> void:
-	if not steam_singleton:
+	if not is_steam_available or not steam_singleton:
 		print("[Steam] 離線模式：無法搜尋大廳")
 		return
 	
@@ -146,6 +146,6 @@ func send_lobby_chat(message: String) -> void:
 	if steam_singleton:
 		steam_singleton.sendLobbyChatMsg(current_lobby_id, message)
 
-func _on_lobby_message(lobby_id: int, user_id: int, message: String, chat_type: int) -> void:
+func _on_lobby_message(_lobby_id: int, user_id: int, message: String, _chat_type: int) -> void:
 	print("[Steam] 聊天: ", user_id, " - ", message)
 	lobby_chat_message.emit(user_id, message)

@@ -7,7 +7,7 @@ extends Control
 
 # ========== 初始化 ==========
 func _ready():
-	refresh_button.pressed.connect(_on_refresh_pressed)
+		refresh_button.pressed.connect(_on_refresh_pressed)
 	back_button.pressed.connect(_on_back_pressed)
 	refresh_server_list()
 

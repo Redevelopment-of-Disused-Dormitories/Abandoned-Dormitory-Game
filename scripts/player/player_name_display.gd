@@ -18,7 +18,7 @@ func _ready():
 	await get_tree().process_frame
 	camera = get_viewport().get_camera_3d()
 
-func _process(delta):
+func _process(_delta):
 	if camera and name_label:
 		update_visibility()
 		update_label_orientation()

@@ -54,7 +54,7 @@ func toggle_recording():
 		start_recording()
 
 # ========== 語音處理 ==========
-func _process(delta):
+func _process(_delta):
 	if is_recording and steam_available and steam_singleton and steam_manager.is_steam_available:
 		check_and_send_voice()
 
@@ -91,7 +91,8 @@ func process_received_voice(audio_data: PackedByteArray):
 		for i in range(0, decompressed.size, 2):
 			var sample = decompressed.uncompressed.decode_s16(i)
 			var amplitude = float(sample) / 32768.0
-			frames[i / 2] = Vector2(amplitude, amplitude)
+			frames[i // 2] = Vector2(amplitude, amplitude)
+
 		
 		var available = playback.get_frames_available()
 		if available >= frames.size():
